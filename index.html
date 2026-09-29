@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velaris — Build Powerful Business Apps Without Coding</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' y1='0' x2='32' y2='32' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%234c1d95'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='21' y1='7' x2='27' y2='13' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%2322d3ee'/%3E%3Cstop offset='1' stop-color='%238b61ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23a)'/%3E%3Cpath d='M8 22L14 10L18 18L22 12L26 22' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='10' r='3' fill='url(%23b)'/%3E%3C/svg%3E" />
   <meta name="description" content="Velaris is a premium no-code / low-code app builder platform. Create internal tools, dashboards, workflows, portals, and custom business applications with drag-and-drop components." />
   <meta property="og:title" content="Velaris — Build Powerful Business Apps Without Coding" />
   <meta property="og:description" content="Drag-and-drop app builder for internal tools, dashboards, and workflows." />
@@ -419,9 +420,24 @@
       background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(200,190,255,.25)) !important;
     }
 
+    /* Footer links hover */
+    .footer-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: block;
+      font-size: 0.875rem;
+    }
+    .footer-link:hover {
+      color: #ab97ff;
+      transform: translateX(4px);
+    }
+    .light .footer-link:hover { color: #6d28d9; }
+
     /* RTL support */
     [dir="rtl"] #back-to-top { right: auto; left: 28px; }
     [dir="rtl"] .ms-auto { margin-left: 0 !important; margin-right: auto !important; }
+    [dir="rtl"] .footer-link:hover { transform: translateX(-4px); }
   </style>
 </head>
 
@@ -1408,18 +1424,18 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-10">
       <div class="lg:col-span-2">
-        <div class="flex items-center gap-2.5 mb-4">
+        <a href="#hero" aria-label="Velaris Home" class="flex items-center gap-2.5 mb-4" style="text-decoration:none;width:fit-content;transition:opacity 0.2s ease;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
           <div class="w-7 h-7 flex-shrink-0">
             <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#flg)"/><path d="M8 22L14 10L18 18L22 12L26 22" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="10" r="3" fill="#22d3ee"/><defs><linearGradient id="flg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#4c1d95"/></linearGradient></defs></svg>
           </div>
           <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;color:var(--text-primary);">Velaris</span>
-        </div>
+        </a>
         <p class="text-sm leading-relaxed mb-4 max-w-xs" style="color:var(--text-secondary);">The modern no-code/low-code platform for building powerful business applications without the complexity.</p>
         <div class="text-xs" style="color:var(--text-secondary);">SOC 2 Type II &middot; GDPR Compliant &middot; AES-256 Encrypted</div>
       </div>
-      <div><div class="font-semibold text-sm mb-3" style="color:var(--text-primary);">Product</div><div class="space-y-2"><a href="#" class="block text-sm" style="color:var(--text-secondary);">Builder</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Components</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Automations</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Integrations</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Pricing</a></div></div>
-      <div><div class="font-semibold text-sm mb-3" style="color:var(--text-primary);">Solutions</div><div class="space-y-2"><a href="#" class="block text-sm" style="color:var(--text-secondary);">Internal Tools</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">CRM</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">HR Portals</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Operations</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Enterprise</a></div></div>
-      <div><div class="font-semibold text-sm mb-3" style="color:var(--text-primary);">Company</div><div class="space-y-2"><a href="#" class="block text-sm" style="color:var(--text-secondary);">About</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Blog</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Careers</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Privacy</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Terms</a></div></div>
+      <div><div class="font-semibold text-sm mb-3" style="color:var(--text-primary);">Product</div><div class="space-y-2"><a href="#showcase" class="footer-link">Builder</a><a href="#showcase" class="footer-link">Components</a><a href="#" class="footer-link">Automations</a><a href="#integrations" class="footer-link">Integrations</a><a href="#" class="footer-link">Pricing</a></div></div>
+      <div><div class="font-semibold text-sm mb-3" style="color:var(--text-primary);">Solutions</div><div class="space-y-2"><a href="#build-anything" class="footer-link">Internal Tools</a><a href="#build-anything" class="footer-link">CRM</a><a href="#build-anything" class="footer-link">HR Portals</a><a href="#build-anything" class="footer-link">Operations</a><a href="#" class="footer-link">Enterprise</a></div></div>
+      <div><div class="font-semibold text-sm mb-3" style="color:var(--text-primary);">Company</div><div class="space-y-2"><a href="#" class="footer-link">About</a><a href="#" class="footer-link">Blog</a><a href="#" class="footer-link">Careers</a><a href="#" class="footer-link">Privacy</a><a href="#" class="footer-link">Terms</a></div></div>
     </div>
     <div class="divider"></div>
     <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -1481,7 +1497,7 @@
       <button type="submit" class="w-full btn-primary justify-center text-base py-3 mt-2">Sign In</button>
     </form>
     <div class="mt-6 text-center text-sm" style="color:var(--text-secondary)">
-      Don't have an account? <a href="#" onclick="closeLoginModal()" class="font-medium hover:opacity-80" style="color:var(--accent)">Start for free</a>
+      Don't have an account? <a href="#" onclick="closeLoginModal()" class="font-medium hover:opacity-80" style="color:var(--accent);white-space:nowrap">Start for free</a>
     </div>
   </div>
 </div>
