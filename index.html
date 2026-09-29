@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velaris — Build Powerful Business Apps Without Coding</title>
+  <meta name="description" content="Velaris is a premium no-code / low-code app builder platform. Create internal tools, dashboards, workflows, portals, and custom business applications with drag-and-drop components." />
+  <meta property="og:title" content="Velaris — Build Powerful Business Apps Without Coding" />
+  <meta property="og:description" content="Drag-and-drop app builder for internal tools, dashboards, and workflows." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 6s ease-in-out 2s infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #09090f;
+      --bg-secondary: #0f0f1a;
+      --bg-card: #14142a;
+      --border: rgba(139, 97, 255, 0.15);
+      --text-primary: #f0f0ff;
+      --text-secondary: #a0a0c0;
+      --accent: #7c3aed;
+      --accent-soft: rgba(124, 58, 237, 0.12);
+    }
+
+    .light {
+      --bg-primary: #fafafa;
+      --bg-secondary: #f0f0f8;
+      --bg-card: #ffffff;
+      --border: rgba(124, 58, 237, 0.2);
+      --text-primary: #0f0f1a;
+      --text-secondary: #5a5a7a;
+      --accent: #6d28d9;
+      --accent-soft: rgba(109, 40, 217, 0.08);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    .glass {
+      background: rgba(20, 20, 42, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(139, 97, 255, 0.15);
+    }
+    .light .glass {
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+    }
+
+    .glass-nav {
+      background: rgba(9, 9, 15, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(139, 97, 255, 0.12);
+    }
+    .light .glass-nav {
+      background: rgba(250, 250, 250, 0.94);
+      border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #8b61ff 0%, #ab97ff 40%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.25s ease;
+      border: 1px solid rgba(139, 97, 255, 0.4);
+      box-shadow: 0 0 24px rgba(124, 58, 237, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(124, 58, 237, 0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+      background: linear-gradient(135deg, #8b61ff, #7c3aed);
+    }
+
+    .btn-ghost {
+      color: var(--text-primary);
+      padding: 11px 28px;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.25s ease;
+      border: 1px solid rgba(139, 97, 255, 0.25);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      background: transparent;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(139, 97, 255, 0.6);
+      background: rgba(139, 97, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      border-color: rgba(139, 97, 255, 0.4);
+      box-shadow: 0 8px 40px rgba(124, 58, 237, 0.15);
+      transform: translateY(-3px);
+    }
+
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(139, 97, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 97, 255, 0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .light .grid-bg {
+      background-image:
+        linear-gradient(rgba(109, 40, 217, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(109, 40, 217, 0.06) 1px, transparent 1px);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .orb-violet { background: rgba(124, 58, 237, 0.25); }
+    .orb-coral  { background: rgba(255, 107, 82, 0.15); }
+    .orb-cyan   { background: rgba(34, 211, 238, 0.12); }
+
+    .wf-node {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(139, 97, 255, 0.3);
+      background: rgba(20, 20, 42, 0.8);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #d4d4ff;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .wf-node:hover {
+      border-color: rgba(139, 97, 255, 0.7);
+      box-shadow: 0 0 16px rgba(124, 58, 237, 0.3);
+    }
+    .light .wf-node {
+      background: rgba(240, 237, 255, 0.9);
+      color: #3b1382;
+      border-color: rgba(109, 40, 217, 0.3);
+    }
+
+    .int-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    .int-pill:hover {
+      border-color: rgba(139, 97, 255, 0.5);
+      color: var(--text-primary);
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #mobile-menu.open { max-height: 600px; }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 50px;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      color: #ab97ff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .light .section-badge {
+      background: rgba(109, 40, 217, 0.1);
+      border-color: rgba(109, 40, 217, 0.25);
+      color: #5b21b6;
+    }
+
+    #back-to-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      border: 1px solid rgba(139, 97, 255, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+    }
+    #back-to-top.visible { opacity: 1; transform: translateY(0); }
+    #back-to-top:hover { box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6); transform: translateY(-3px); }
+    [dir="rtl"] #back-to-top { right: auto; left: 28px; }
+
+    .nav-link {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-link:hover { color: var(--text-primary); }
+    .nav-link.active {
+      color: #8b61ff;
+      font-weight: 700;
+    }
+    .light .nav-link.active {
+      color: #6d28d9;
+    }
+
+    .feat-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8b61ff, #22d3ee);
+      flex-shrink: 0; margin-top: 5px;
+    }
+
+    .comp-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; border-radius: 8px;
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--text-secondary);
+      cursor: grab; transition: all 0.2s ease;
+    }
+    .comp-item:hover { background: rgba(124, 58, 237, 0.15); color: #ab97ff; }
+
+    .sec-badge {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border-radius: 10px;
+      background: rgba(124, 58, 237, 0.08);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+      font-size: 0.8rem; font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.25s ease;
+    }
+    .sec-badge:hover { background: rgba(124, 58, 237, 0.15); color: var(--text-primary); }
+
+    .anim-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      animation: ping-soft 2s ease-in-out infinite;
+    }
+    @keyframes ping-soft {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+    }
+
+    .wf-line {
+      stroke-dasharray: 6 4;
+      animation: dashMove 1.5s linear infinite;
+    }
+    @keyframes dashMove { to { stroke-dashoffset: -20; } }
+
+    .canvas-block {
+      border-radius: 8px;
+      border: 1px solid rgba(139, 97, 255, 0.2);
+      background: rgba(20, 20, 42, 0.6);
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }
+    .light .canvas-block {
+      background: rgba(230, 225, 255, 0.85);
+      border-color: rgba(109, 40, 217, 0.25);
+      color: #1a0a4e;
+    }
+    .canvas-block:hover { border-color: rgba(139, 97, 255, 0.5); box-shadow: 0 0 12px rgba(124, 58, 237, 0.2); }
+
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(139, 97, 255, 0.3), transparent);
+    }
+
+    .stat-number {
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 2.5rem;
+      background: linear-gradient(135deg, #8b61ff, #22d3ee);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .mini-app {
+      position: relative; overflow: hidden; border-radius: 14px;
+      border: 1px solid var(--border); background: var(--bg-card);
+      transition: all 0.3s ease;
+    }
+    .mini-app:hover {
+      border-color: rgba(139, 97, 255, 0.4);
+      box-shadow: 0 12px 50px rgba(124, 58, 237, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .glow-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(139, 97, 255, 0.2);
+      animation: expandRing 3s ease-in-out infinite;
+    }
+    @keyframes expandRing {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 0.3; }
+      100% { transform: scale(0.9); opacity: 0.8; }
+    }
+
+    .light .text-gray-400 { color: #5a5a7a; }
+
+    /* Light mode: showcase / builder section text overrides */
+    .light .comp-item { color: #2e0f7a; font-weight: 600; }
+    .light .comp-item:hover { background: rgba(109, 40, 217, 0.12); color: #6d28d9; }
+
+    /* Light mode: mini-app card preview panels */
+    .light .mini-app-preview {
+      background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(200,190,255,.25)) !important;
+    }
+
+    /* RTL support */
+    [dir="rtl"] #back-to-top { right: auto; left: 28px; }
+    [dir="rtl"] .ms-auto { margin-left: 0 !important; margin-right: auto !important; }
+  </style>
+</head>
+
+<body class="antialiased">
+
+<!-- ============================================================
+     NAVIGATION
+============================================================ -->
+<nav id="navbar" class="glass-nav fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="#hero" class="flex items-center gap-2.5 flex-shrink-0" aria-label="Velaris Home">
+        <div class="w-8 h-8 flex-shrink-0">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="8" fill="url(#lg1)"/>
+            <path d="M8 22L14 10L18 18L22 12L26 22" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="24" cy="10" r="3" fill="url(#dg1)"/>
+            <defs>
+              <linearGradient id="lg1" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#4c1d95"/></linearGradient>
+              <linearGradient id="dg1" x1="21" y1="7" x2="27" y2="13"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#8b61ff"/></linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.125rem;color:var(--text-primary);letter-spacing:-0.02em;">Velaris</span>
+      </a>
+
+      <div class="hidden lg:flex items-center gap-7">
+        <a href="#hero" class="nav-link">Home</a>
+        <a href="#showcase" class="nav-link">Product</a>
+        <a href="#build-anything" class="nav-link">Solutions</a>
+        <a href="#integrations" class="nav-link">Integrations</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#security" class="nav-link">Security</a>
+      </div>
+
+      <div class="hidden lg:flex items-center gap-3">
+        <button id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme" class="w-9 h-9 rounded-lg flex items-center justify-center border transition-all duration-200 hover:scale-110" style="border-color:var(--border);color:var(--text-secondary)">
+          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.66-9h-1M4.34 12h-1m15.07-6.07-.71.71M6.34 17.66l-.71.71M17.66 17.66l.71.71M6.34 6.34l.71.71M12 5a7 7 0 100 14A7 7 0 0012 5z"/></svg>
+          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+        <button class="btn-primary text-sm" onclick="openLoginModal()">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Start Building
+        </button>
+      </div>
+
+      <button id="hamburger-btn" onclick="toggleMenu()" aria-label="Open menu" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg border" style="border-color:var(--border);color:var(--text-secondary)">
+        <svg id="menu-open" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg id="menu-close" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="lg:hidden">
+      <div class="px-4 py-4 space-y-1 border-t" style="border-color:var(--border)">
+        <a href="#hero" onclick="closeMenu()" class="block py-2.5 nav-link text-sm">Home</a>
+        <a href="#showcase" onclick="closeMenu()" class="block py-2.5 nav-link text-sm">Product</a>
+        <a href="#build-anything" onclick="closeMenu()" class="block py-2.5 nav-link text-sm">Solutions</a>
+        <a href="#integrations" onclick="closeMenu()" class="block py-2.5 nav-link text-sm">Integrations</a>
+        <a href="#features" onclick="closeMenu()" class="block py-2.5 nav-link text-sm">Features</a>
+        <a href="#security" onclick="closeMenu()" class="block py-2.5 nav-link text-sm">Security</a>
+        <div class="pt-3 pb-1 flex items-center gap-3 flex-wrap">
+          <button onclick="toggleTheme()" class="flex items-center gap-2 px-3 py-2 rounded-lg border text-sm" style="border-color:var(--border);color:var(--text-secondary);">Theme</button>
+        </div>
+        <div class="pt-2 flex gap-3 flex-wrap">
+          <button onclick="closeMenu(); openLoginModal()" class="btn-primary text-sm">Start Building</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section id="hero" class="relative min-h-screen grid-bg pt-16 overflow-hidden flex items-center">
+  <div class="orb orb-violet w-96 h-96 top-20 -left-48 opacity-60"></div>
+  <div class="orb orb-coral w-72 h-72 top-40 right-0 opacity-40"></div>
+  <div class="orb orb-cyan w-80 h-80 bottom-20 left-1/3 opacity-30"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 w-full">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Left -->
+      <div class="reveal">
+        <div class="section-badge mb-6">
+          <span style="width:6px;height:6px;border-radius:50%;background:#8b61ff;display:inline-block;"></span>
+          No-Code &middot; Low-Code Platform
+        </div>
+        <h1 class="font-display leading-tight mb-6" style="font-weight:900;font-size:clamp(2.4rem,6vw,4.5rem);color:var(--text-primary);letter-spacing:-0.02em;line-height:1.07;">
+          Build Powerful<br/>
+          <span class="gradient-text">Business Apps.</span><br/>
+          Without Building<br/>From Scratch.
+        </h1>
+        <p class="text-base sm:text-lg leading-relaxed mb-8 max-w-lg" style="color:var(--text-secondary)">
+          Velaris is the modern visual app builder for enterprises. Drag, drop, and connect — create internal tools, dashboards, workflows, and portals 10&times; faster than traditional development.
+        </p>
+        <div class="flex flex-wrap gap-3 mb-10">
+          <button class="btn-primary" style="padding:14px 28px;font-size:0.95rem;">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Start Building Free
+          </button>
+          <button class="btn-ghost" style="padding:13px 28px;font-size:0.95rem;">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Explore Platform
+          </button>
+        </div>
+        <div class="flex flex-wrap items-center gap-6">
+          <div class="flex items-center gap-2">
+            <div class="flex -space-x-2">
+              <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-bold text-white" style="border-color:var(--bg-primary);background:linear-gradient(135deg,#8b61ff,#22d3ee)">A</div>
+              <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-bold text-white" style="border-color:var(--bg-primary);background:linear-gradient(135deg,#ff7b6b,#8b61ff)">M</div>
+              <div class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-bold text-white" style="border-color:var(--bg-primary);background:linear-gradient(135deg,#22d3ee,#7c3aed)">R</div>
+            </div>
+            <span class="text-xs" style="color:var(--text-secondary)"><strong style="color:var(--text-primary)">12,000+</strong> teams building</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div style="color:#facc15;font-size:0.85rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <span class="text-xs" style="color:var(--text-secondary)"><strong style="color:var(--text-primary)">4.9/5</strong> on G2</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <div class="anim-dot" style="background:#22d3ee;"></div>
+            <span class="text-xs" style="color:var(--text-secondary)">No credit card required</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Builder Preview -->
+      <div class="relative reveal" style="animation-delay:0.2s">
+        <div class="glass rounded-2xl overflow-hidden" style="box-shadow:0 30px 80px rgba(124,58,237,0.25);">
+          <!-- Title Bar -->
+          <div class="flex items-center gap-2 px-4 py-3 border-b" style="border-color:rgba(139,97,255,0.15);">
+            <div class="w-3 h-3 rounded-full" style="background:#ef4444;opacity:.8;"></div>
+            <div class="w-3 h-3 rounded-full" style="background:#facc15;opacity:.8;"></div>
+            <div class="w-3 h-3 rounded-full" style="background:#22c55e;opacity:.8;"></div>
+            <div class="flex-1 mx-2 sm:mx-4 overflow-hidden">
+              <div class="glass rounded-md px-2 sm:px-3 py-1 text-xs text-center truncate" style="color:var(--text-secondary)">velaris.app/builder/crm-dashboard</div>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-md font-semibold" style="background:rgba(34,211,238,0.15);color:#22d3ee;">&#9679; LIVE</span>
+          </div>
+          <!-- 3-Column Builder -->
+          <div class="flex" style="height:340px;">
+            <!-- Sidebar Components -->
+            <div class="hidden lg:block w-32 xl:w-40 flex-shrink-0 border-r" style="border-color:rgba(139,97,255,0.12);background:var(--bg-secondary);">
+              <div class="px-3 py-2 text-xs font-semibold" style="color:var(--text-secondary);">Components</div>
+              <div class="px-2 space-y-0.5">
+                <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8b61ff" stroke-width="2"><rect x="3" y="3" width="18" height="4" rx="1"/></svg>Table</div>
+                <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#ff7b6b" stroke-width="2"><rect x="3" y="3" width="18" height="7" rx="2"/></svg>Form</div>
+                <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#22d3ee" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Chart</div>
+                <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8b61ff" stroke-width="2"><rect x="3" y="10" width="18" height="11" rx="2"/></svg>Button</div>
+                <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#ab97ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Calendar</div>
+                <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#22d3ee" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Database</div>
+              </div>
+            </div>
+            <!-- Canvas -->
+            <div class="flex-1 relative overflow-hidden" style="background:var(--bg-primary);">
+              <div class="absolute inset-0" style="background-image:radial-gradient(rgba(139,97,255,.15) 1px,transparent 1px);background-size:20px 20px;"></div>
+              <div class="absolute top-4 left-4 right-4 space-y-2">
+                <div class="flex gap-2">
+                  <div class="canvas-block flex-1" style="background:rgba(124,58,237,.15);border-color:rgba(139,97,255,.4);">
+                    <div class="text-xs font-semibold" style="color:#8b61ff;">KPI Dashboard</div>
+                  </div>
+                  <div class="canvas-block"><div style="color:#22d3ee;font-size:.7rem;font-weight:600;">&#9679; LIVE</div></div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="canvas-block text-center"><div class="text-xs font-bold" style="color:#8b61ff;">$2.4M</div><div style="font-size:.6rem;color:var(--text-secondary)">Revenue</div></div>
+                  <div class="canvas-block text-center"><div class="text-xs font-bold" style="color:#22d3ee;">1,247</div><div style="font-size:.6rem;color:var(--text-secondary)">Users</div></div>
+                  <div class="canvas-block text-center"><div class="text-xs font-bold" style="color:#ff7b6b;">94%</div><div style="font-size:.6rem;color:var(--text-secondary)">Uptime</div></div>
+                </div>
+                <div class="canvas-block">
+                  <div style="font-size:.65rem;color:var(--text-secondary);margin-bottom:4px;">Revenue Trend</div>
+                  <svg width="100%" height="50" viewBox="0 0 200 50">
+                    <defs><linearGradient id="cg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8b61ff" stop-opacity="0.3"/><stop offset="100%" stop-color="#8b61ff" stop-opacity="0"/></linearGradient></defs>
+                    <polyline points="0,40 30,32 60,28 90,20 120,24 150,12 180,8 200,10" fill="none" stroke="#8b61ff" stroke-width="1.5" stroke-linecap="round"/>
+                    <polygon points="0,40 30,32 60,28 90,20 120,24 150,12 180,8 200,10 200,50 0,50" fill="url(#cg1)"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="absolute bottom-4 right-4">
+                <div class="canvas-block" style="padding:5px 10px;border-color:rgba(139,97,255,.5);"><div style="font-size:.65rem;color:#8b61ff;font-weight:600;">&#8853; Drop components here</div></div>
+              </div>
+            </div>
+            <!-- Properties -->
+            <div class="hidden xl:block w-32 flex-shrink-0 border-l" style="border-color:rgba(139,97,255,.12);background:var(--bg-secondary);">
+              <div class="px-3 py-2 text-xs font-semibold" style="color:var(--text-secondary);">Properties</div>
+              <div class="px-2 space-y-3 text-xs">
+                <div><div style="color:var(--text-secondary);font-size:.65rem;margin-bottom:2px;">Width</div><div class="canvas-block" style="padding:3px 6px;text-align:center;color:var(--text-primary);">100%</div></div>
+                <div><div style="color:var(--text-secondary);font-size:.65rem;margin-bottom:2px;">Data Source</div><div class="canvas-block" style="padding:3px 6px;color:#22d3ee;">PostgreSQL</div></div>
+                <div><div style="color:var(--text-secondary);font-size:.65rem;margin-bottom:2px;">Refresh</div><div class="canvas-block" style="padding:3px 6px;color:var(--text-primary);">30s</div></div>
+              </div>
+            </div>
+          </div>
+          <!-- Status bar -->
+          <div class="flex flex-wrap items-center gap-2 sm:gap-4 px-3 sm:px-4 py-2 border-t" style="border-color:rgba(139,97,255,.12);background:var(--bg-secondary);">
+            <span class="text-xs" style="color:var(--text-secondary);">8 comps</span>
+            <span class="text-xs hidden sm:inline" style="color:var(--text-secondary);">3 data sources</span>
+            <div class="ms-auto flex items-center gap-2">
+              <span class="text-xs hidden sm:inline" style="color:#22d3ee;">Auto-saved</span>
+              <button class="text-xs px-2 py-0.5 rounded" style="background:rgba(124,58,237,.2);color:#ab97ff;font-weight:600;">Preview</button>
+              <button class="text-xs px-2 py-0.5 rounded" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white;font-weight:600;">Publish</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Cards -->
+        <div class="absolute -top-4 -right-4 glass rounded-xl p-3 animate-float hidden sm:block" style="box-shadow:0 8px 32px rgba(124,58,237,.3);min-width:130px;">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="anim-dot" style="background:#22d3ee;"></div>
+            <span class="text-xs font-semibold" style="color:var(--text-primary);">Workflow Active</span>
+          </div>
+          <div class="text-xs" style="color:var(--text-secondary);">New request &rarr; Approved</div>
+        </div>
+        <div class="absolute -bottom-4 -left-4 glass rounded-xl p-3 animate-float-delayed hidden sm:block" style="box-shadow:0 8px 32px rgba(255,107,82,.2);min-width:120px;">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="anim-dot" style="background:#ff7b6b;"></div>
+            <span class="text-xs font-semibold" style="color:var(--text-primary);">API Connected</span>
+          </div>
+          <div class="text-xs" style="color:var(--text-secondary);">Salesforce CRM synced</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6">
+      <div class="text-center reveal"><div class="stat-number">10&times;</div><div class="text-sm" style="color:var(--text-secondary);">Faster Build</div></div>
+      <div class="text-center reveal" style="animation-delay:.1s"><div class="stat-number">200+</div><div class="text-sm" style="color:var(--text-secondary);">Components</div></div>
+      <div class="text-center reveal" style="animation-delay:.2s"><div class="stat-number">50+</div><div class="text-sm" style="color:var(--text-secondary);">Integrations</div></div>
+      <div class="text-center reveal" style="animation-delay:.3s"><div class="stat-number">99.9%</div><div class="text-sm" style="color:var(--text-secondary);">Uptime SLA</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 — VISUAL APP BUILDER SHOWCASE
+============================================================ -->
+<section id="showcase" class="py-24 relative overflow-hidden">
+  <div class="orb orb-violet w-80 h-80 top-0 right-0 opacity-30"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <div class="section-badge mb-4">Visual Builder</div>
+      <h2 class="font-display mb-4" style="font-weight:800;font-size:clamp(1.9rem,4vw,3rem);color:var(--text-primary);letter-spacing:-0.02em;">
+        A Canvas Built for Speed.<br/><span class="gradient-text">Not Complexity.</span>
+      </h2>
+      <p class="text-base sm:text-lg max-w-2xl mx-auto" style="color:var(--text-secondary);">
+        A professional-grade visual builder with a complete component library, live database connections, and real-time preview — all in one workspace.
+      </p>
+    </div>
+
+    <div class="glass rounded-2xl overflow-hidden reveal" style="box-shadow:0 40px 100px rgba(124,58,237,.2);">
+      <!-- Toolbar -->
+      <div class="flex items-center gap-3 px-5 py-3 border-b flex-wrap" style="border-color:rgba(139,97,255,.15);background:var(--bg-secondary);">
+        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full" style="background:#8b61ff;"></div><span class="text-sm font-semibold" style="color:var(--text-primary);">Employee Portal</span></div>
+        <div class="flex gap-1 ms-4">
+          <button class="px-3 py-1 text-xs rounded-lg font-semibold" style="background:rgba(124,58,237,.2);color:#ab97ff;">Design</button>
+          <button class="px-3 py-1 text-xs rounded-lg" style="color:var(--text-secondary);">Data</button>
+          <button class="px-3 py-1 text-xs rounded-lg" style="color:var(--text-secondary);">Logic</button>
+          <button class="px-3 py-1 text-xs rounded-lg" style="color:var(--text-secondary);">Deploy</button>
+        </div>
+        <div class="ms-auto flex items-center gap-2">
+          <button class="text-xs px-3 py-1 rounded-lg font-semibold" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white;">&#9654; Preview</button>
+          <button class="text-xs px-3 py-1 rounded-lg font-semibold" style="background:rgba(34,211,238,.15);color:#22d3ee;">Publish</button>
+        </div>
+      </div>
+
+      <div class="flex" style="min-height:400px;">
+        <!-- Library -->
+        <div class="hidden md:block w-40 lg:w-48 flex-shrink-0 border-r" style="border-color:rgba(139,97,255,.12);background:var(--bg-secondary);">
+          <div class="p-3"><input class="w-full px-3 py-1.5 rounded-lg text-xs outline-none" style="background:rgba(139,97,255,.1);border:1px solid rgba(139,97,255,.2);color:var(--text-secondary);" placeholder="Search components&hellip;" /></div>
+          <div class="px-3 pb-1 text-xs font-semibold" style="color:#8b61ff;letter-spacing:.08em;text-transform:uppercase;">Display</div>
+          <div class="space-y-0.5 px-2 mb-3">
+            <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8b61ff" stroke-width="2"><rect x="3" y="3" width="18" height="5" rx="1"/><rect x="3" y="10" width="18" height="5" rx="1"/><rect x="3" y="17" width="18" height="4" rx="1"/></svg>Table</div>
+            <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#22d3ee" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Line Chart</div>
+            <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#ff7b6b" stroke-width="2"><rect x="3" y="14" width="4" height="7"/><rect x="9" y="8" width="4" height="13"/><rect x="15" y="11" width="4" height="10"/></svg>Bar Chart</div>
+          </div>
+          <div class="px-3 pb-1 text-xs font-semibold" style="color:#8b61ff;letter-spacing:.08em;text-transform:uppercase;">Input</div>
+          <div class="space-y-0.5 px-2 mb-3">
+            <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#22d3ee" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/></svg>Form</div>
+            <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#ff7b6b" stroke-width="2"><rect x="3" y="10" width="18" height="11" rx="2"/></svg>Button</div>
+            <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8b61ff" stroke-width="2"><rect x="3" y="6" width="18" height="4" rx="2"/></svg>Select</div>
+          </div>
+          <div class="px-3 pb-1 text-xs font-semibold" style="color:#8b61ff;letter-spacing:.08em;text-transform:uppercase;">Data</div>
+          <div class="space-y-0.5 px-2">
+            <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#ab97ff" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Query</div>
+            <div class="comp-item"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#22d3ee" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>API Query</div>
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div class="flex-1 relative overflow-hidden" style="background:var(--bg-primary);">
+          <div class="absolute inset-0" style="background-image:radial-gradient(rgba(139,97,255,.1) 1px,transparent 1px);background-size:24px 24px;"></div>
+          <div class="absolute inset-0 p-4 overflow-auto">
+            <!-- App top nav -->
+            <div class="rounded-t-xl px-4 py-2 flex items-center gap-3 border border-b-0" style="background:rgba(124,58,237,.15);border-color:rgba(139,97,255,.3);">
+              <div class="w-2 h-2 rounded-full" style="background:#8b61ff;"></div>
+              <span class="text-xs font-semibold" style="color:#ab97ff;">Employee Portal</span>
+              <div class="ms-auto flex gap-3">
+                <span class="text-xs" style="color:var(--text-secondary);">Dashboard</span>
+                <span class="text-xs font-semibold" style="color:#8b61ff;">Team</span>
+                <span class="text-xs" style="color:var(--text-secondary);">Reports</span>
+              </div>
+            </div>
+            <div class="rounded-b-xl p-4 border" style="background:var(--bg-secondary);border-color:rgba(139,97,255,.3);">
+              <div class="grid grid-cols-3 gap-3 mb-4">
+                <div class="canvas-block" style="border-color:rgba(139,97,255,.4);background:rgba(124,58,237,.1);">
+                  <div class="text-lg font-bold" style="color:#8b61ff;">142</div>
+                  <div class="text-xs" style="color:var(--text-secondary);">Employees</div>
+                  <div class="text-xs" style="color:#22d3ee;">&uarr; +12 this month</div>
+                </div>
+                <div class="canvas-block">
+                  <div class="text-lg font-bold" style="color:#22d3ee;">86%</div>
+                  <div class="text-xs" style="color:var(--text-secondary);">Satisfaction</div>
+                  <div class="text-xs" style="color:#22d3ee;">&uarr; High</div>
+                </div>
+                <div class="canvas-block">
+                  <div class="text-lg font-bold" style="color:#ff7b6b;">7</div>
+                  <div class="text-xs" style="color:var(--text-secondary);">Pending Approvals</div>
+                  <div class="text-xs" style="color:#ff7b6b;">&#9889; Needs action</div>
+                </div>
+              </div>
+              <div class="canvas-block" style="padding:10px;">
+                <div class="text-xs font-semibold mb-2" style="color:var(--text-primary);">Recent Requests</div>
+                <table class="w-full text-xs">
+                  <thead><tr style="color:var(--text-secondary);"><td class="pb-1">Employee</td><td class="pb-1">Request</td><td class="pb-1">Status</td></tr></thead>
+                  <tbody style="color:var(--text-secondary);">
+                    <tr><td class="py-0.5">Sarah K.</td><td>Leave &mdash; 5 days</td><td style="color:#22d3ee;font-weight:600;">&#10003; Approved</td></tr>
+                    <tr><td class="py-0.5">Arjun M.</td><td>Equipment order</td><td style="color:#ff7b6b;font-weight:600;">&#9203; Pending</td></tr>
+                    <tr><td class="py-0.5">Linh T.</td><td>Remote work</td><td style="color:#8b61ff;font-weight:600;">&#9679; Review</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="absolute top-4 left-4 right-4 pointer-events-none" style="border:2px dashed rgba(139,97,255,.4);border-radius:12px;height:calc(100% - 32px);"></div>
+        </div>
+
+        <!-- Properties Panel -->
+        <div class="hidden lg:block w-52 flex-shrink-0 border-l" style="border-color:rgba(139,97,255,.12);background:var(--bg-secondary);">
+          <div class="p-3 border-b" style="border-color:rgba(139,97,255,.12);">
+            <div class="text-xs font-semibold mb-1" style="color:var(--text-primary);">Selected: KPI Card</div>
+            <div class="text-xs" style="color:var(--text-secondary);">Employee Portal &rsaquo; Dashboard</div>
+          </div>
+          <div class="p-3 space-y-3">
+            <div><div class="text-xs mb-1" style="color:var(--text-secondary);">Value Source</div><div class="canvas-block text-xs" style="color:#22d3ee;">{{employees.count}}</div></div>
+            <div><div class="text-xs mb-1" style="color:var(--text-secondary);">Accent Color</div>
+              <div class="flex gap-1.5">
+                <div class="w-5 h-5 rounded-md cursor-pointer" style="background:#8b61ff;"></div>
+                <div class="w-5 h-5 rounded-md cursor-pointer" style="background:#22d3ee;"></div>
+                <div class="w-5 h-5 rounded-md cursor-pointer" style="background:#ff7b6b;"></div>
+                <div class="w-5 h-5 rounded-md cursor-pointer" style="background:#ab97ff;"></div>
+              </div>
+            </div>
+            <div><div class="text-xs mb-1" style="color:var(--text-secondary);">Refresh Rate</div><div class="canvas-block text-xs" style="color:var(--text-primary);">30 seconds</div></div>
+            <div class="divider"></div>
+            <div>
+              <div class="text-xs font-semibold mb-2" style="color:var(--text-secondary);">Data Binding</div>
+              <div class="canvas-block text-xs mb-1" style="color:#8b61ff;">hr_database &rarr; users</div>
+              <div class="canvas-block text-xs" style="color:var(--text-secondary);">Filter: active = true</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-3 mt-10 reveal">
+      <span class="int-pill">&#8853; Drag &amp; Drop</span>
+      <span class="int-pill">&#9889; Live Preview</span>
+      <span class="int-pill">&#128279; Data Binding</span>
+      <span class="int-pill">&#128241; Responsive</span>
+      <span class="int-pill">&#127774; Custom Themes</span>
+      <span class="int-pill">&#9729; Auto Deploy</span>
+      <span class="int-pill">&#128274; Role Permissions</span>
+      <span class="int-pill">&#128202; 200+ Components</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — BUILD ANYTHING
+============================================================ -->
+<section id="build-anything" class="py-24 relative overflow-hidden" style="background:var(--bg-secondary);">
+  <div class="orb orb-cyan w-72 h-72 -bottom-20 -left-20 opacity-30"></div>
+  <div class="orb orb-violet w-60 h-60 top-20 right-0 opacity-25"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <div class="section-badge mb-4">Use Cases</div>
+      <h2 class="font-display mb-4" style="font-weight:800;font-size:clamp(1.9rem,4vw,3rem);color:var(--text-primary);letter-spacing:-0.02em;">
+        Build <span class="gradient-text">Anything</span> Your Business Needs
+      </h2>
+      <p class="text-base sm:text-lg max-w-2xl mx-auto" style="color:var(--text-secondary);">
+        From simple approval tools to complex operations platforms &mdash; Velaris is the foundation of every internal application your teams need.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- 1 Internal Dashboard -->
+      <div class="mini-app reveal" style="animation-delay:.05s;">
+        <div class="h-36 mini-app-preview relative overflow-hidden" style="background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(9,9,15,.6));">
+          <div class="absolute inset-0 p-3">
+            <div class="text-xs font-semibold mb-2" style="color:#ab97ff;">Analytics Dashboard</div>
+            <div class="grid grid-cols-2 gap-1.5 mb-1.5">
+              <div class="rounded-md p-1.5 text-center" style="background:rgba(124,58,237,.2);"><div class="text-sm font-bold" style="color:#8b61ff;">$1.2M</div><div style="font-size:.55rem;color:var(--text-secondary);">Revenue</div></div>
+              <div class="rounded-md p-1.5 text-center" style="background:rgba(34,211,238,.1);"><div class="text-sm font-bold" style="color:#22d3ee;">98%</div><div style="font-size:.55rem;color:var(--text-secondary);">KPI Hit</div></div>
+            </div>
+            <div class="rounded-md p-1" style="background:var(--bg-secondary);">
+              <svg width="100%" height="28" viewBox="0 0 100 28"><polyline points="0,22 15,16 30,18 45,10 60,12 75,6 90,8 100,5" fill="none" stroke="#8b61ff" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="p-4"><h3 class="font-semibold text-sm mb-1" style="color:var(--text-primary);">Internal Dashboard</h3><p class="text-xs leading-relaxed" style="color:var(--text-secondary);">Live KPIs, charts, and real-time business metrics in a single unified view.</p></div>
+      </div>
+
+      <!-- 2 CRM -->
+      <div class="mini-app reveal" style="animation-delay:.1s;">
+        <div class="h-36 mini-app-preview relative overflow-hidden" style="background:linear-gradient(135deg,rgba(255,107,82,.2),transparent);">
+          <div class="absolute inset-0 p-3">
+            <div class="text-xs font-semibold mb-2" style="color:#ff7b6b;">CRM Pipeline</div>
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#8b61ff;"></div><div class="text-xs" style="color:var(--text-secondary);">Acme Corp &mdash; $45K</div><div class="ms-auto text-xs" style="color:#22d3ee;">&#10003;</div></div>
+              <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#22d3ee;"></div><div class="text-xs" style="color:var(--text-secondary);">TechVault &mdash; $120K</div><div class="ms-auto text-xs" style="color:#ff7b6b;">&#9203;</div></div>
+              <div class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#ff7b6b;"></div><div class="text-xs" style="color:var(--text-secondary);">Novara &mdash; $78K</div><div class="ms-auto text-xs" style="color:#ab97ff;">&#9900;</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-4"><h3 class="font-semibold text-sm mb-1" style="color:var(--text-primary);">CRM Tool</h3><p class="text-xs leading-relaxed" style="color:var(--text-secondary);">Manage leads, deals, and customer relationships with a custom-fit pipeline.</p></div>
+      </div>
+
+      <!-- 3 Employee Portal -->
+      <div class="mini-app reveal" style="animation-delay:.15s;">
+        <div class="h-36 mini-app-preview relative overflow-hidden" style="background:linear-gradient(135deg,rgba(34,211,238,.15),transparent);">
+          <div class="absolute inset-0 p-3">
+            <div class="text-xs font-semibold mb-2" style="color:#22d3ee;">Employee Portal</div>
+            <div class="space-y-1.5">
+              <div class="rounded-md p-2 flex items-center gap-2" style="background:rgba(34,211,238,.1);">
+                <div class="w-5 h-5 rounded-full flex-shrink-0" style="background:linear-gradient(135deg,#8b61ff,#22d3ee);"></div>
+                <div><div class="text-xs font-semibold" style="color:var(--text-primary);">Sarah K.</div><div style="font-size:.55rem;color:var(--text-secondary);">Leave &mdash; Approved</div></div>
+              </div>
+              <div class="flex gap-2 text-xs">
+                <span class="px-2 py-0.5 rounded-md" style="background:rgba(139,97,255,.15);color:#ab97ff;">Payslips</span>
+                <span class="px-2 py-0.5 rounded-md" style="background:rgba(34,211,238,.1);color:#22d3ee;">Requests</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-4"><h3 class="font-semibold text-sm mb-1" style="color:var(--text-primary);">Employee Portal</h3><p class="text-xs leading-relaxed" style="color:var(--text-secondary);">Self-service HR portals, leave requests, payroll, and announcements.</p></div>
+      </div>
+
+      <!-- 4 Inventory -->
+      <div class="mini-app reveal" style="animation-delay:.2s;">
+        <div class="h-36 mini-app-preview relative overflow-hidden" style="background:linear-gradient(135deg,rgba(171,151,255,.2),transparent);">
+          <div class="absolute inset-0 p-3">
+            <div class="text-xs font-semibold mb-2" style="color:#ab97ff;">Inventory Manager</div>
+            <table class="w-full" style="font-size:.6rem;">
+              <tr style="color:var(--text-secondary);"><td>Item</td><td class="text-right">Stock</td><td class="text-right">Status</td></tr>
+              <tr style="color:var(--text-primary);"><td>Laptops</td><td class="text-right">24</td><td class="text-right" style="color:#22d3ee;">OK</td></tr>
+              <tr style="color:var(--text-primary);"><td>Monitors</td><td class="text-right">8</td><td class="text-right" style="color:#ff7b6b;">Low</td></tr>
+              <tr style="color:var(--text-primary);"><td>Keyboards</td><td class="text-right">47</td><td class="text-right" style="color:#22d3ee;">OK</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="p-4"><h3 class="font-semibold text-sm mb-1" style="color:var(--text-primary);">Inventory System</h3><p class="text-xs leading-relaxed" style="color:var(--text-secondary);">Track stock levels, purchases, and asset allocation across departments.</p></div>
+      </div>
+
+      <!-- 5 Approval Workflow -->
+      <div class="mini-app reveal" style="animation-delay:.25s;">
+        <div class="h-36 mini-app-preview relative overflow-hidden" style="background:linear-gradient(135deg,rgba(34,211,238,.12),rgba(124,58,237,.2));">
+          <div class="absolute inset-0 p-3 flex flex-col justify-center">
+            <div class="text-xs font-semibold mb-3" style="color:#22d3ee;">Approval Workflow</div>
+            <div class="flex items-center gap-1">
+              <div class="px-2 py-1 rounded" style="background:rgba(34,211,238,.15);color:#22d3ee;font-size:.6rem;">Submit</div>
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8b61ff"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              <div class="px-2 py-1 rounded" style="background:rgba(139,97,255,.15);color:#ab97ff;font-size:.6rem;">Review</div>
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8b61ff"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              <div class="px-2 py-1 rounded" style="background:rgba(255,107,82,.15);color:#ff7b6b;font-size:.6rem;">Approve</div>
+            </div>
+          </div>
+        </div>
+        <div class="p-4"><h3 class="font-semibold text-sm mb-1" style="color:var(--text-primary);">Approval Workflow</h3><p class="text-xs leading-relaxed" style="color:var(--text-secondary);">Multi-step approvals with automatic routing, escalations, and notifications.</p></div>
+      </div>
+
+      <!-- 6 Project Management -->
+      <div class="mini-app reveal" style="animation-delay:.3s;">
+        <div class="h-36 mini-app-preview relative overflow-hidden" style="background:linear-gradient(135deg,rgba(255,107,82,.15),rgba(139,97,255,.2));">
+          <div class="absolute inset-0 p-3">
+            <div class="text-xs font-semibold mb-2" style="color:#ff7b6b;">Project Board</div>
+            <div class="flex gap-2" style="font-size:.55rem;">
+              <div class="flex-1 rounded p-1.5" style="background:var(--bg-secondary);">
+                <div class="font-semibold mb-1" style="color:var(--text-secondary);">TODO</div>
+                <div class="rounded px-1 py-0.5 mb-0.5" style="background:rgba(139,97,255,.15);color:#ab97ff;">API integration</div>
+                <div class="rounded px-1 py-0.5" style="background:rgba(139,97,255,.15);color:#ab97ff;">Auth module</div>
+              </div>
+              <div class="flex-1 rounded p-1.5" style="background:var(--bg-secondary);">
+                <div class="font-semibold mb-1" style="color:var(--text-secondary);">IN PROGRESS</div>
+                <div class="rounded px-1 py-0.5" style="background:rgba(34,211,238,.15);color:#22d3ee;">UI design</div>
+              </div>
+              <div class="flex-1 rounded p-1.5" style="background:var(--bg-secondary);">
+                <div class="font-semibold mb-1" style="color:var(--text-secondary);">DONE</div>
+                <div class="rounded px-1 py-0.5" style="background:rgba(34,211,238,.15);color:#22d3ee;">Setup env</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-4"><h3 class="font-semibold text-sm mb-1" style="color:var(--text-primary);">Project Management</h3><p class="text-xs leading-relaxed" style="color:var(--text-secondary);">Kanban boards, task tracking, and project timelines built to fit your workflow.</p></div>
+      </div>
+
+      <!-- 7 Customer Portal -->
+      <div class="mini-app reveal" style="animation-delay:.35s;">
+        <div class="h-36 mini-app-preview relative overflow-hidden" style="background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(34,211,238,.1));">
+          <div class="absolute inset-0 p-3">
+            <div class="text-xs font-semibold mb-2" style="color:#8b61ff;">Customer Portal</div>
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 rounded font-semibold" style="background:rgba(34,211,238,.15);color:#22d3ee;font-size:.55rem;">NEW</span><span class="text-xs" style="color:var(--text-secondary);">Ticket #4821 &mdash; API issue</span></div>
+              <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 rounded font-semibold" style="background:rgba(139,97,255,.15);color:#ab97ff;font-size:.55rem;">OPEN</span><span class="text-xs" style="color:var(--text-secondary);">Ticket #4820 &mdash; Billing</span></div>
+              <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 rounded font-semibold" style="background:rgba(34,211,238,.15);color:#22d3ee;font-size:.55rem;">CLOSED</span><span class="text-xs" style="color:var(--text-secondary);">Ticket #4816 &mdash; Feature req</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-4"><h3 class="font-semibold text-sm mb-1" style="color:var(--text-primary);">Customer Portal</h3><p class="text-xs leading-relaxed" style="color:var(--text-secondary);">Client-facing portals for support tickets, billing, and account management.</p></div>
+      </div>
+
+      <!-- 8 Operations -->
+      <div class="mini-app reveal" style="animation-delay:.4s;">
+        <div class="h-36 mini-app-preview relative overflow-hidden" style="background:linear-gradient(135deg,rgba(171,151,255,.15),rgba(255,107,82,.15));">
+          <div class="absolute inset-0 p-3">
+            <div class="text-xs font-semibold mb-2" style="color:#ab97ff;">Operations Hub</div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <div class="rounded-md p-1.5" style="background:var(--bg-secondary);"><div class="text-sm font-bold" style="color:#22d3ee;">99.2%</div><div style="font-size:.55rem;color:var(--text-secondary);">System uptime</div></div>
+              <div class="rounded-md p-1.5" style="background:var(--bg-secondary);"><div class="text-sm font-bold" style="color:#ff7b6b;">3</div><div style="font-size:.55rem;color:var(--text-secondary);">Alerts active</div></div>
+              <div class="rounded-md p-1.5" style="background:var(--bg-secondary);"><div class="text-sm font-bold" style="color:#8b61ff;">1.4ms</div><div style="font-size:.55rem;color:var(--text-secondary);">Avg latency</div></div>
+              <div class="rounded-md p-1.5" style="background:var(--bg-secondary);"><div class="text-sm font-bold" style="color:#ab97ff;">48K</div><div style="font-size:.55rem;color:var(--text-secondary);">Requests/hr</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="p-4"><h3 class="font-semibold text-sm mb-1" style="color:var(--text-primary);">Operations Dashboard</h3><p class="text-xs leading-relaxed" style="color:var(--text-secondary);">Monitor infrastructure, incidents, and service metrics from one control center.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — POWERFUL FEATURES
+============================================================ -->
+<section id="features" class="py-24 relative overflow-hidden">
+  <div class="orb orb-violet w-96 h-96 -right-48 top-0 opacity-25"></div>
+  <div class="orb orb-coral w-60 h-60 bottom-0 left-0 opacity-20"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <div class="section-badge mb-4">Platform Capabilities</div>
+      <h2 class="font-display mb-4" style="font-weight:800;font-size:clamp(1.9rem,4vw,3rem);color:var(--text-primary);letter-spacing:-0.02em;">
+        Everything You Need.<br/><span class="gradient-text">Nothing You Don't.</span>
+      </h2>
+      <p class="text-base sm:text-lg max-w-2xl mx-auto" style="color:var(--text-secondary);">Velaris packs the power of an enterprise app platform into an interface so intuitive, anyone can build with it.</p>
+    </div>
+
+    <!-- Big + small row -->
+    <div class="grid lg:grid-cols-3 gap-5 mb-5">
+      <div class="card lg:col-span-2 p-8 reveal">
+        <div class="flex flex-col sm:flex-row gap-6 items-start">
+          <div class="flex-1">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background:rgba(124,58,237,.2);border:1px solid rgba(139,97,255,.3);">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#8b61ff"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16M4 12h16"/></svg>
+            </div>
+            <h3 class="font-bold text-xl mb-3" style="color:var(--text-primary);">Drag-and-Drop Visual Builder</h3>
+            <p class="text-sm leading-relaxed mb-4" style="color:var(--text-secondary);">Compose beautiful, data-powered interfaces by dragging components from a library of 200+ pre-built blocks onto a pixel-perfect canvas. No HTML required.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="int-pill" style="font-size:.72rem;">200+ Components</span>
+              <span class="int-pill" style="font-size:.72rem;">Grid Layout</span>
+              <span class="int-pill" style="font-size:.72rem;">Snap Alignment</span>
+            </div>
+          </div>
+          <div class="w-full sm:w-48 flex-shrink-0">
+            <div class="glass rounded-xl p-3" style="min-height:160px;">
+              <div class="space-y-2">
+                <div class="canvas-block flex items-center gap-2" style="border-color:rgba(139,97,255,.5);background:rgba(124,58,237,.15);"><svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8b61ff" stroke-width="2"><rect x="3" y="3" width="18" height="5" rx="1"/></svg><span class="text-xs" style="color:#ab97ff;">Header Block</span></div>
+                <div class="canvas-block flex items-center gap-2"><svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#22d3ee" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="text-xs" style="color:var(--text-secondary);">Chart</span></div>
+                <div class="canvas-block flex items-center gap-2"><svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#ff7b6b" stroke-width="2"><rect x="3" y="3" width="18" height="7" rx="2"/></svg><span class="text-xs" style="color:var(--text-secondary);">Form</span></div>
+                <div style="border:2px dashed rgba(139,97,255,.4);border-radius:8px;padding:10px;text-align:center;"><span style="font-size:.65rem;color:rgba(139,97,255,.7);">Drop here</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-6 reveal" style="animation-delay:.1s;">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.25);">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2" style="color:var(--text-primary);">Database Integration</h3>
+        <p class="text-sm leading-relaxed mb-3" style="color:var(--text-secondary);">Connect to PostgreSQL, MySQL, MongoDB, Supabase, Firebase, and more with zero configuration.</p>
+        <div class="flex flex-wrap gap-1">
+          <span class="text-xs px-2 py-0.5 rounded-md" style="background:rgba(34,211,238,.1);color:#22d3ee;">PostgreSQL</span>
+          <span class="text-xs px-2 py-0.5 rounded-md" style="background:rgba(34,211,238,.1);color:#22d3ee;">MySQL</span>
+          <span class="text-xs px-2 py-0.5 rounded-md" style="background:rgba(34,211,238,.1);color:#22d3ee;">MongoDB</span>
+          <span class="text-xs px-2 py-0.5 rounded-md" style="background:rgba(34,211,238,.1);color:#22d3ee;">Firebase</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+      <div class="card p-6 reveal">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background:rgba(255,107,82,.12);border:1px solid rgba(255,123,107,.25);">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#ff7b6b"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2" style="color:var(--text-primary);">REST API &amp; Webhooks</h3>
+        <p class="text-sm leading-relaxed" style="color:var(--text-secondary);">Connect any REST or GraphQL API in seconds. Trigger webhooks, parse responses, and bind data to any component.</p>
+      </div>
+      <div class="card p-6 reveal" style="animation-delay:.1s;">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background:rgba(124,58,237,.15);border:1px solid rgba(139,97,255,.3);">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#8b61ff"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0-2.76-2.24-5-5-5S2 8.24 2 11v1h10v-1zm0 0c0-2.76 2.24-5 5-5s5 2.24 5 5v1h-10v-1z"/></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2" style="color:var(--text-primary);">Role-Based Permissions</h3>
+        <p class="text-sm leading-relaxed" style="color:var(--text-secondary);">Granular access control. Define who can view, edit, or publish apps. Protect sensitive data at field level.</p>
+      </div>
+      <div class="card p-6 reveal sm:col-span-2 lg:col-span-1" style="animation-delay:.15s;">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style="background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.25);">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2" style="color:var(--text-primary);">Real-Time Data Sync</h3>
+        <p class="text-sm leading-relaxed" style="color:var(--text-secondary);">Live data streaming with configurable refresh intervals. WebSocket support for mission-critical dashboards.</p>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-5">
+      <div class="card p-8 reveal">
+        <h3 class="font-bold text-xl mb-6" style="color:var(--text-primary);">More Platform Capabilities</h3>
+        <div class="space-y-4">
+          <div class="flex gap-3"><div class="feat-dot"></div><div><div class="font-semibold text-sm mb-0.5" style="color:var(--text-primary);">Workflow Automation</div><div class="text-xs" style="color:var(--text-secondary);">Trigger, condition, action chains with zero code</div></div></div>
+          <div class="flex gap-3"><div class="feat-dot"></div><div><div class="font-semibold text-sm mb-0.5" style="color:var(--text-primary);">Custom Authentication</div><div class="text-xs" style="color:var(--text-secondary);">SSO, OAuth 2.0, SAML, and email/password</div></div></div>
+          <div class="flex gap-3"><div class="feat-dot"></div><div><div class="font-semibold text-sm mb-0.5" style="color:var(--text-primary);">Reusable Components</div><div class="text-xs" style="color:var(--text-secondary);">Save and share components across your workspace</div></div></div>
+          <div class="flex gap-3"><div class="feat-dot"></div><div><div class="font-semibold text-sm mb-0.5" style="color:var(--text-primary);">Version Control</div><div class="text-xs" style="color:var(--text-secondary);">Full history with restore &mdash; never lose a version</div></div></div>
+          <div class="flex gap-3"><div class="feat-dot"></div><div><div class="font-semibold text-sm mb-0.5" style="color:var(--text-primary);">Team Collaboration</div><div class="text-xs" style="color:var(--text-secondary);">Multi-user editing with live presence indicators</div></div></div>
+          <div class="flex gap-3"><div class="feat-dot"></div><div><div class="font-semibold text-sm mb-0.5" style="color:var(--text-primary);">Responsive Design Engine</div><div class="text-xs" style="color:var(--text-secondary);">Apps that look perfect on every screen size</div></div></div>
+        </div>
+      </div>
+      <div class="card p-6 reveal" style="animation-delay:.15s;">
+        <h3 class="font-bold text-lg mb-4" style="color:var(--text-primary);">Velaris Platform Architecture</h3>
+        <div class="flex flex-col gap-3">
+          <div class="rounded-xl p-3 text-center" style="background:rgba(124,58,237,.12);border:1px solid rgba(139,97,255,.25);">
+            <div class="text-xs font-semibold" style="color:#8b61ff;">Visual App Builder Layer</div>
+            <div class="flex justify-center gap-2 mt-1.5 flex-wrap">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(139,97,255,.15);color:#ab97ff;">Canvas</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(139,97,255,.15);color:#ab97ff;">Components</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(139,97,255,.15);color:#ab97ff;">Themes</span>
+            </div>
+          </div>
+          <div class="flex justify-center"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 4v12M4 10l6 6 6-6" stroke="rgba(139,97,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="rounded-xl p-3 text-center" style="background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);">
+            <div class="text-xs font-semibold" style="color:#22d3ee;">Logic &amp; Automation Layer</div>
+            <div class="flex justify-center gap-2 mt-1.5 flex-wrap">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(34,211,238,.1);color:#22d3ee;">Workflows</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(34,211,238,.1);color:#22d3ee;">Queries</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(34,211,238,.1);color:#22d3ee;">Events</span>
+            </div>
+          </div>
+          <div class="flex justify-center"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 4v12M4 10l6 6 6-6" stroke="rgba(139,97,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="rounded-xl p-3 text-center" style="background:rgba(255,107,82,.08);border:1px solid rgba(255,123,107,.2);">
+            <div class="text-xs font-semibold" style="color:#ff7b6b;">Data &amp; Integration Layer</div>
+            <div class="flex justify-center gap-2 mt-1.5 flex-wrap">
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(255,107,82,.1);color:#ff7b6b;">Databases</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(255,107,82,.1);color:#ff7b6b;">REST API</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(255,107,82,.1);color:#ff7b6b;">Webhooks</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — AUTOMATION & WORKFLOW BUILDER
+============================================================ -->
+<section id="automation" class="py-24 relative overflow-hidden" style="background:var(--bg-secondary);">
+  <div class="orb orb-violet w-80 h-80 top-0 left-0 opacity-30"></div>
+  <div class="orb orb-cyan w-64 h-64 bottom-0 right-0 opacity-20"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <div class="section-badge mb-4">Automation Engine</div>
+      <h2 class="font-display mb-4" style="font-weight:800;font-size:clamp(1.9rem,4vw,3rem);color:var(--text-primary);letter-spacing:-0.02em;">
+        Visual Workflows.<br/><span class="gradient-text">Enterprise Logic.</span>
+      </h2>
+      <p class="text-base sm:text-lg max-w-2xl mx-auto" style="color:var(--text-secondary);">Build sophisticated multi-step automations without writing a single line of code. Trigger, condition, and action &mdash; visually.</p>
+    </div>
+
+    <div class="glass rounded-2xl p-6 sm:p-8 reveal" style="box-shadow:0 30px 80px rgba(124,58,237,.2);">
+      <div class="flex items-center gap-3 mb-8 flex-wrap">
+        <div class="flex items-center gap-2"><div class="anim-dot" style="background:#22d3ee;"></div><span class="text-sm font-semibold" style="color:var(--text-primary);">Workflow: Purchase Approval</span></div>
+        <div class="flex gap-2 ms-auto">
+          <button class="text-xs px-3 py-1.5 rounded-lg font-semibold" style="background:rgba(124,58,237,.15);color:#ab97ff;border:1px solid rgba(139,97,255,.25);">+ Add Node</button>
+          <button class="text-xs px-3 py-1.5 rounded-lg font-semibold" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white;">&#9654; Run</button>
+        </div>
+      </div>
+
+      <!-- Workflow nodes - scrollable on mobile -->
+      <div class="overflow-x-auto pb-4">
+        <div class="flex items-start gap-0 min-w-max">
+          <!-- Node 1 -->
+          <div class="flex flex-col items-center">
+            <div class="wf-node" style="background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.4);color:#22d3ee;">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <div><div class="text-xs font-semibold" style="color:#22d3ee;">Trigger</div><div style="font-size:.6rem;color:rgba(34,211,238,.7);">New Form Submit</div></div>
+            </div>
+            <div class="text-xs mt-2 px-2 py-0.5 rounded font-semibold" style="background:rgba(34,211,238,.1);color:#22d3ee;font-size:.6rem;">Step 1</div>
+          </div>
+          <div class="flex items-center px-2" style="margin-top:12px;">
+            <svg width="60" height="24" viewBox="0 0 60 24"><line x1="0" y1="12" x2="50" y2="12" stroke="rgba(139,97,255,.5)" stroke-width="1.5" stroke-dasharray="5,3" class="wf-line"/><polygon points="50,8 60,12 50,16" fill="rgba(139,97,255,.7)"/></svg>
+          </div>
+          <!-- Node 2 -->
+          <div class="flex flex-col items-center">
+            <div class="wf-node" style="background:rgba(139,97,255,.12);border-color:rgba(139,97,255,.4);">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#8b61ff"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <div><div class="text-xs font-semibold" style="color:#ab97ff;">Condition</div><div style="font-size:.6rem;color:rgba(171,151,255,.7);">Amount &gt; $5K</div></div>
+            </div>
+            <div class="text-xs mt-2 px-2 py-0.5 rounded font-semibold" style="background:rgba(139,97,255,.1);color:#8b61ff;font-size:.6rem;">Step 2</div>
+          </div>
+          <div class="flex items-center px-2" style="margin-top:12px;">
+            <svg width="60" height="24" viewBox="0 0 60 24"><line x1="0" y1="12" x2="50" y2="12" stroke="rgba(139,97,255,.5)" stroke-width="1.5" stroke-dasharray="5,3" class="wf-line"/><polygon points="50,8 60,12 50,16" fill="rgba(139,97,255,.7)"/></svg>
+          </div>
+          <!-- Node 3 -->
+          <div class="flex flex-col items-center">
+            <div class="wf-node" style="background:rgba(255,107,82,.12);border-color:rgba(255,123,107,.4);color:#ff7b6b;">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+              <div><div class="text-xs font-semibold" style="color:#ff7b6b;">Notify</div><div style="font-size:.6rem;color:rgba(255,123,107,.7);">Email Manager</div></div>
+            </div>
+            <div class="text-xs mt-2 px-2 py-0.5 rounded font-semibold" style="background:rgba(255,107,82,.1);color:#ff7b6b;font-size:.6rem;">Step 3</div>
+          </div>
+          <div class="flex items-center px-2" style="margin-top:12px;">
+            <svg width="60" height="24" viewBox="0 0 60 24"><line x1="0" y1="12" x2="50" y2="12" stroke="rgba(139,97,255,.5)" stroke-width="1.5" stroke-dasharray="5,3" class="wf-line"/><polygon points="50,8 60,12 50,16" fill="rgba(139,97,255,.7)"/></svg>
+          </div>
+          <!-- Node 4 -->
+          <div class="flex flex-col items-center">
+            <div class="wf-node" style="background:rgba(171,151,255,.12);border-color:rgba(171,151,255,.4);color:#ab97ff;">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <div><div class="text-xs font-semibold" style="color:#ab97ff;">Wait</div><div style="font-size:.6rem;color:rgba(171,151,255,.7);">Approval Response</div></div>
+            </div>
+            <div class="text-xs mt-2 px-2 py-0.5 rounded font-semibold" style="background:rgba(171,151,255,.1);color:#ab97ff;font-size:.6rem;">Step 4</div>
+          </div>
+          <div class="flex items-center px-2" style="margin-top:12px;">
+            <svg width="60" height="24" viewBox="0 0 60 24"><line x1="0" y1="12" x2="50" y2="12" stroke="rgba(139,97,255,.5)" stroke-width="1.5" stroke-dasharray="5,3" class="wf-line"/><polygon points="50,8 60,12 50,16" fill="rgba(139,97,255,.7)"/></svg>
+          </div>
+          <!-- Node 5 -->
+          <div class="flex flex-col items-center">
+            <div class="wf-node" style="background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.4);color:#22d3ee;">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+              <div><div class="text-xs font-semibold" style="color:#22d3ee;">Update DB</div><div style="font-size:.6rem;color:rgba(34,211,238,.7);">status=approved</div></div>
+            </div>
+            <div class="text-xs mt-2 px-2 py-0.5 rounded font-semibold" style="background:rgba(34,211,238,.1);color:#22d3ee;font-size:.6rem;">Step 5</div>
+          </div>
+          <div class="flex items-center px-2" style="margin-top:12px;">
+            <svg width="60" height="24" viewBox="0 0 60 24"><line x1="0" y1="12" x2="50" y2="12" stroke="rgba(139,97,255,.5)" stroke-width="1.5" stroke-dasharray="5,3" class="wf-line"/><polygon points="50,8 60,12 50,16" fill="rgba(139,97,255,.7)"/></svg>
+          </div>
+          <!-- Node 6 -->
+          <div class="flex flex-col items-center">
+            <div class="wf-node" style="background:rgba(34,211,238,.15);border-color:rgba(34,211,238,.5);color:#22d3ee;">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <div><div class="text-xs font-semibold" style="color:#22d3ee;">Complete</div><div style="font-size:.6rem;color:rgba(34,211,238,.7);">Requester notified</div></div>
+            </div>
+            <div class="text-xs mt-2 px-2 py-0.5 rounded font-semibold" style="background:rgba(34,211,238,.15);color:#22d3ee;font-size:.6rem;">End</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 grid sm:grid-cols-3 gap-3">
+        <div class="rounded-xl p-3 border" style="border-color:rgba(139,97,255,.2);background:rgba(124,58,237,.06);">
+          <div class="text-xs font-semibold mb-1" style="color:#8b61ff;">Leave Request Flow</div>
+          <div class="text-xs" style="color:var(--text-secondary);">Submit &rarr; HR Review &rarr; Manager &rarr; Approved &rarr; Calendar Block</div>
+        </div>
+        <div class="rounded-xl p-3 border" style="border-color:rgba(34,211,238,.2);background:rgba(34,211,238,.05);">
+          <div class="text-xs font-semibold mb-1" style="color:#22d3ee;">Onboarding Automation</div>
+          <div class="text-xs" style="color:var(--text-secondary);">New hire &rarr; Accounts created &rarr; Welcome email &rarr; Task list assigned</div>
+        </div>
+        <div class="rounded-xl p-3 border" style="border-color:rgba(255,123,107,.2);background:rgba(255,107,82,.05);">
+          <div class="text-xs font-semibold mb-1" style="color:#ff7b6b;">Invoice Processing</div>
+          <div class="text-xs" style="color:var(--text-secondary);">Invoice received &rarr; Validate &rarr; Finance review &rarr; Payment trigger &rarr; Archive</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — INTEGRATIONS
+============================================================ -->
+<section id="integrations" class="py-24 relative overflow-hidden">
+  <div class="orb orb-coral w-72 h-72 top-20 right-0 opacity-20"></div>
+  <div class="orb orb-violet w-80 h-80 bottom-0 left-0 opacity-25"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div class="reveal">
+        <div class="section-badge mb-6">Ecosystem</div>
+        <h2 class="font-display mb-6" style="font-weight:800;font-size:clamp(1.9rem,4vw,3rem);color:var(--text-primary);letter-spacing:-0.02em;">
+          Connect to Every Tool<br/>Your Team <span class="gradient-text">Already Uses.</span>
+        </h2>
+        <p class="text-base sm:text-lg leading-relaxed mb-8" style="color:var(--text-secondary);">Velaris integrates with over 50 services out of the box. REST APIs, databases, cloud storage, CRMs, payment systems, and communication tools &mdash; all connected in minutes.</p>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(124,58,237,.2);"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="#8b61ff" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><div><span class="text-sm font-semibold" style="color:var(--text-primary);">Databases &mdash; </span><span class="text-sm" style="color:var(--text-secondary);">PostgreSQL, MySQL, MongoDB, Supabase, Firebase, Redis</span></div></div>
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(34,211,238,.12);"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="#22d3ee" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div><div><span class="text-sm font-semibold" style="color:var(--text-primary);">APIs &amp; Webhooks &mdash; </span><span class="text-sm" style="color:var(--text-secondary);">REST, GraphQL, Webhook triggers, custom headers</span></div></div>
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(255,107,82,.12);"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="#ff7b6b" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div><span class="text-sm font-semibold" style="color:var(--text-primary);">Communication &mdash; </span><span class="text-sm" style="color:var(--text-secondary);">Slack, Teams, Email (SMTP, SendGrid), WhatsApp</span></div></div>
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(124,58,237,.15);"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="#ab97ff" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div><span class="text-sm font-semibold" style="color:var(--text-primary);">Payments &mdash; </span><span class="text-sm" style="color:var(--text-secondary);">Stripe, Razorpay, PayPal, custom payment gateways</span></div></div>
+        </div>
+      </div>
+
+      <div class="reveal" style="animation-delay:.15s;">
+        <div class="relative" style="height:400px;">
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-2xl flex items-center justify-center z-10" style="background:linear-gradient(135deg,#7c3aed,#4c1d95);box-shadow:0 0 40px rgba(124,58,237,.5);border:1px solid rgba(139,97,255,.5);">
+            <svg class="w-9 h-9" viewBox="0 0 32 32" fill="none"><path d="M8 22L14 10L18 18L22 12L26 22" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="10" r="3" fill="#22d3ee"/></svg>
+          </div>
+          <div class="glow-ring absolute top-1/2 left-1/2" style="width:120px;height:120px;margin-left:-60px;margin-top:-60px;"></div>
+          <div class="glow-ring absolute top-1/2 left-1/2" style="width:200px;height:200px;margin-left:-100px;margin-top:-100px;animation-delay:1s;"></div>
+          <div class="glow-ring absolute top-1/2 left-1/2" style="width:300px;height:300px;margin-left:-150px;margin-top:-150px;animation-delay:2s;"></div>
+          <div class="absolute int-pill" style="top:16px;left:50%;transform:translateX(-50%);"><div class="w-4 h-4 rounded flex-shrink-0" style="background:#4285f4;"></div>Google Sheets</div>
+          <div class="absolute int-pill" style="top:72px;right:16px;"><div class="w-4 h-4 rounded flex-shrink-0" style="background:#00a1e0;"></div>Salesforce</div>
+          <div class="absolute int-pill" style="top:50%;right:8px;transform:translateY(-50%);"><div class="w-4 h-4 rounded flex-shrink-0" style="background:#ff9900;"></div>AWS S3</div>
+          <div class="absolute int-pill" style="bottom:72px;right:16px;"><div class="w-4 h-4 rounded flex-shrink-0" style="background:#7c3aed;"></div>Stripe</div>
+          <div class="absolute int-pill" style="bottom:16px;left:50%;transform:translateX(-50%);"><div class="w-4 h-4 rounded flex-shrink-0" style="background:#4a154b;"></div>Slack</div>
+          <div class="absolute int-pill" style="bottom:72px;left:16px;"><div class="w-4 h-4 rounded flex-shrink-0" style="background:#0078d4;"></div>Azure DB</div>
+          <div class="absolute int-pill" style="top:50%;left:8px;transform:translateY(-50%);"><div class="w-4 h-4 rounded flex-shrink-0" style="background:#336791;"></div>PostgreSQL</div>
+          <div class="absolute int-pill" style="top:72px;left:16px;"><div class="w-4 h-4 rounded flex-shrink-0" style="background:#ea4335;"></div>SendGrid</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 reveal">
+      <div class="flex flex-wrap justify-center gap-3">
+        <span class="int-pill">&#128202; Google Analytics</span>
+        <span class="int-pill">&#128281; MySQL</span>
+        <span class="int-pill">&#128293; Firebase</span>
+        <span class="int-pill">&#128179; PayPal</span>
+        <span class="int-pill">&#128140; Mailchimp</span>
+        <span class="int-pill">&#129302; OpenAI</span>
+        <span class="int-pill">&#128193; Dropbox</span>
+        <span class="int-pill">&#128279; Zapier</span>
+        <span class="int-pill">&#128200; HubSpot</span>
+        <span class="int-pill">&#128172; Twilio</span>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 7 — WHY TEAMS USE IT
+============================================================ -->
+<section id="why" class="py-24 relative overflow-hidden" style="background:var(--bg-secondary);">
+  <div class="orb orb-violet w-72 h-72 top-0 right-0 opacity-25"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <div class="section-badge mb-4">Why Velaris</div>
+      <h2 class="font-display mb-4" style="font-weight:800;font-size:clamp(1.9rem,4vw,3rem);color:var(--text-primary);letter-spacing:-0.02em;">
+        The Smarter Way to<br/><span class="gradient-text">Build Internal Tools.</span>
+      </h2>
+      <p class="text-base sm:text-lg max-w-2xl mx-auto" style="color:var(--text-secondary);">Traditional development takes months. Velaris takes days. See the difference.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8 mb-16">
+      <div class="card p-8 reveal" style="border-color:rgba(255,107,82,.2);">
+        <div class="flex items-center gap-2 mb-6"><div class="w-3 h-3 rounded-full" style="background:#ff7b6b;"></div><span class="font-semibold text-sm" style="color:#ff7b6b;">Traditional Development</span><span class="ms-auto text-xs px-2 py-0.5 rounded" style="background:rgba(255,107,82,.1);color:#ff7b6b;">2&ndash;6 months</span></div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3"><div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0" style="background:rgba(255,107,82,.1);color:#ff7b6b;">1</div><div><div class="text-sm font-semibold" style="color:var(--text-primary);">Requirements gathering &amp; planning</div><div class="text-xs mt-0.5" style="color:var(--text-secondary);">2-4 weeks of stakeholder meetings</div></div></div>
+          <div class="flex items-center gap-3"><div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0" style="background:rgba(255,107,82,.1);color:#ff7b6b;">2</div><div><div class="text-sm font-semibold" style="color:var(--text-primary);">Design &amp; architecture</div><div class="text-xs mt-0.5" style="color:var(--text-secondary);">3-6 weeks for UI/UX and tech design</div></div></div>
+          <div class="flex items-center gap-3"><div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0" style="background:rgba(255,107,82,.1);color:#ff7b6b;">3</div><div><div class="text-sm font-semibold" style="color:var(--text-primary);">Development sprints</div><div class="text-xs mt-0.5" style="color:var(--text-secondary);">6-12 weeks of front/backend coding</div></div></div>
+          <div class="flex items-center gap-3"><div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0" style="background:rgba(255,107,82,.1);color:#ff7b6b;">4</div><div><div class="text-sm font-semibold" style="color:var(--text-primary);">QA, testing &amp; deployment</div><div class="text-xs mt-0.5" style="color:var(--text-secondary);">3-4 weeks of testing cycles</div></div></div>
+          <div class="mt-4 pt-4 border-t" style="border-color:rgba(255,107,82,.15);"><div class="text-sm" style="color:var(--text-secondary);">Result: <span style="color:#ff7b6b;font-weight:700;">6-month timeline, $80K+ dev cost</span></div></div>
+        </div>
+      </div>
+
+      <div class="card p-8 reveal" style="animation-delay:.1s;border-color:rgba(34,211,238,.2);">
+        <div class="flex items-center gap-2 mb-6"><div class="anim-dot" style="background:#22d3ee;width:10px;height:10px;"></div><span class="font-semibold text-sm" style="color:#22d3ee;">With Velaris</span><span class="ms-auto text-xs px-2 py-0.5 rounded" style="background:rgba(34,211,238,.1);color:#22d3ee;">2&ndash;5 days</span></div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3"><div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0" style="background:rgba(34,211,238,.1);color:#22d3ee;">&#10003;</div><div><div class="text-sm font-semibold" style="color:var(--text-primary);">Connect your data sources</div><div class="text-xs mt-0.5" style="color:var(--text-secondary);">Add PostgreSQL, API, or spreadsheet in minutes</div></div></div>
+          <div class="flex items-center gap-3"><div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0" style="background:rgba(34,211,238,.1);color:#22d3ee;">&#10003;</div><div><div class="text-sm font-semibold" style="color:var(--text-primary);">Drag and drop your interface</div><div class="text-xs mt-0.5" style="color:var(--text-secondary);">Build complete UIs from the component library</div></div></div>
+          <div class="flex items-center gap-3"><div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0" style="background:rgba(34,211,238,.1);color:#22d3ee;">&#10003;</div><div><div class="text-sm font-semibold" style="color:var(--text-primary);">Configure logic &amp; automations</div><div class="text-xs mt-0.5" style="color:var(--text-secondary);">Set up workflows, permissions, and triggers visually</div></div></div>
+          <div class="flex items-center gap-3"><div class="w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0" style="background:rgba(34,211,238,.1);color:#22d3ee;">&#10003;</div><div><div class="text-sm font-semibold" style="color:var(--text-primary);">Publish &amp; share</div><div class="text-xs mt-0.5" style="color:var(--text-secondary);">One-click deploy to your domain or subdomain</div></div></div>
+          <div class="mt-4 pt-4 border-t" style="border-color:rgba(34,211,238,.15);"><div class="text-sm" style="color:var(--text-secondary);">Result: <span style="color:#22d3ee;font-weight:700;">Live in days, at a fraction of the cost</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="card p-6 text-center reveal"><div class="stat-number mb-2">10&times;</div><div class="font-semibold text-sm mb-2" style="color:var(--text-primary);">Faster Development</div><div class="text-xs leading-relaxed" style="color:var(--text-secondary);">What used to take months of engineering effort now ships in days with Velaris.</div></div>
+      <div class="card p-6 text-center reveal" style="animation-delay:.1s;"><div class="stat-number mb-2">85%</div><div class="font-semibold text-sm mb-2" style="color:var(--text-primary);">Cost Reduction</div><div class="text-xs leading-relaxed" style="color:var(--text-secondary);">Eliminate expensive developer sprints for internal tooling and redirect budget to growth.</div></div>
+      <div class="card p-6 text-center reveal sm:col-span-2 lg:col-span-1" style="animation-delay:.15s;"><div class="stat-number mb-2">&#8734;</div><div class="font-semibold text-sm mb-2" style="color:var(--text-primary);">Zero Code Required</div><div class="text-xs leading-relaxed" style="color:var(--text-secondary);">Business analysts, ops managers, and product teams build production apps without engineers.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 8 — ENTERPRISE SECURITY
+============================================================ -->
+<section id="security" class="py-24 relative overflow-hidden">
+  <div class="orb orb-violet w-80 h-80 top-0 left-0 opacity-25"></div>
+  <div class="orb orb-cyan w-64 h-64 bottom-0 right-0 opacity-20"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Security Dashboard -->
+      <div class="reveal order-2 lg:order-1">
+        <div class="glass rounded-2xl overflow-hidden" style="box-shadow:0 30px 80px rgba(124,58,237,.2);">
+          <div class="px-4 py-3 border-b flex items-center gap-3" style="border-color:rgba(139,97,255,.15);background:var(--bg-secondary);"><div class="anim-dot" style="background:#22d3ee;"></div><span class="text-sm font-semibold" style="color:var(--text-primary);">Security &amp; Compliance Center</span><span class="ms-auto text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(34,211,238,.1);color:#22d3ee;">All Systems Secure</span></div>
+          <div class="p-4 grid grid-cols-3 gap-3 border-b" style="border-color:rgba(139,97,255,.12);">
+            <div class="text-center"><div class="text-xl font-bold" style="color:#22d3ee;">SOC2</div><div class="text-xs" style="color:var(--text-secondary);">Type II</div></div>
+            <div class="text-center"><div class="text-xl font-bold" style="color:#8b61ff;">GDPR</div><div class="text-xs" style="color:var(--text-secondary);">Compliant</div></div>
+            <div class="text-center"><div class="text-xl font-bold" style="color:#ab97ff;">AES-256</div><div class="text-xs" style="color:var(--text-secondary);">Encryption</div></div>
+          </div>
+          <div class="p-4">
+            <div class="text-xs font-semibold mb-3" style="color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;">Role-Based Access Control</div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-3 rounded-lg px-3 py-2" style="background:rgba(124,58,237,.1);border:1px solid rgba(139,97,255,.2);"><div class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0" style="background:#8b61ff;"><span style="color:white;font-size:.6rem;">&#9679;</span></div><div class="flex-1"><div class="text-xs font-semibold" style="color:var(--text-primary);">Admin</div></div><span class="text-xs px-1.5 py-0.5 rounded font-semibold" style="background:rgba(34,211,238,.1);color:#22d3ee;">Full Access</span></div>
+              <div class="flex items-center gap-3 rounded-lg px-3 py-2" style="background:var(--bg-secondary);border:1px solid rgba(139,97,255,.12);"><div class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0" style="background:rgba(34,211,238,.2);"><span style="color:#22d3ee;font-size:.6rem;">&#9679;</span></div><div class="flex-1"><div class="text-xs font-semibold" style="color:var(--text-primary);">Manager</div></div><span class="text-xs px-1.5 py-0.5 rounded font-semibold" style="background:rgba(139,97,255,.1);color:#ab97ff;">Read + Edit</span></div>
+              <div class="flex items-center gap-3 rounded-lg px-3 py-2" style="background:var(--bg-secondary);border:1px solid rgba(139,97,255,.12);"><div class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0" style="background:rgba(255,107,82,.2);"><span style="color:#ff7b6b;font-size:.6rem;">&#9679;</span></div><div class="flex-1"><div class="text-xs font-semibold" style="color:var(--text-primary);">Viewer</div></div><span class="text-xs px-1.5 py-0.5 rounded font-semibold" style="background:rgba(255,107,82,.1);color:#ff7b6b;">Read Only</span></div>
+            </div>
+          </div>
+          <div class="px-4 pb-4">
+            <div class="text-xs font-semibold mb-2" style="color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;">Recent Audit Events</div>
+            <div class="space-y-1.5 text-xs" style="color:var(--text-secondary);">
+              <div class="flex items-center gap-2"><span style="color:#22d3ee;">&#10003;</span><span>sarah@corp.com logged in via SSO</span><span class="ms-auto" style="font-size:.65rem;">2m ago</span></div>
+              <div class="flex items-center gap-2"><span style="color:#8b61ff;">&#9900;</span><span>Admin published &ldquo;CRM v2.1&rdquo;</span><span class="ms-auto" style="font-size:.65rem;">15m ago</span></div>
+              <div class="flex items-center gap-2"><span style="color:#ff7b6b;">&#8856;</span><span>Access denied for unknown IP</span><span class="ms-auto" style="font-size:.65rem;">1h ago</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal order-1 lg:order-2" style="animation-delay:.1s;">
+        <div class="section-badge mb-6">Enterprise Security</div>
+        <h2 class="font-display mb-6" style="font-weight:800;font-size:clamp(1.9rem,4vw,3rem);color:var(--text-primary);letter-spacing:-0.02em;">
+          Built for Enterprise-Grade<br/><span class="gradient-text">Trust &amp; Security.</span>
+        </h2>
+        <p class="text-base leading-relaxed mb-8" style="color:var(--text-secondary);">Velaris is engineered to meet the strictest compliance and security requirements of global enterprises. Your data, workflows, and user access are protected at every layer.</p>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="sec-badge"><svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8b61ff"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>Role-Based Access</div>
+          <div class="sec-badge"><svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>SSO / SAML</div>
+          <div class="sec-badge"><svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#ff7b6b"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>Audit Logs</div>
+          <div class="sec-badge"><svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#ab97ff"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Environment Isolation</div>
+          <div class="sec-badge"><svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#8b61ff"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>AES-256 Encryption</div>
+          <div class="sec-badge"><svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Team Workspace</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 9 — FINAL CTA
+============================================================ -->
+<section id="cta" class="py-24 relative overflow-hidden" style="background:var(--bg-secondary);">
+  <div class="orb orb-violet w-96 h-96 top-0 left-1/2 -translate-x-1/2 opacity-40"></div>
+  <div class="orb orb-cyan w-64 h-64 bottom-0 left-0 opacity-25"></div>
+  <div class="orb orb-coral w-64 h-64 bottom-0 right-0 opacity-20"></div>
+  <div class="absolute inset-0 grid-bg opacity-50"></div>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center reveal">
+      <div class="flex justify-center gap-3 mb-8 flex-wrap">
+        <div class="glass rounded-xl px-4 py-2.5 animate-float" style="box-shadow:0 8px 32px rgba(124,58,237,.2);"><div class="text-xs font-semibold" style="color:#8b61ff;">&#8853; Form Component</div></div>
+        <div class="glass rounded-xl px-4 py-2.5 animate-float-delayed" style="box-shadow:0 8px 32px rgba(34,211,238,.15);"><div class="text-xs font-semibold" style="color:#22d3ee;">&#128279; PostgreSQL Connected</div></div>
+        <div class="glass rounded-xl px-4 py-2.5 animate-float" style="box-shadow:0 8px 32px rgba(255,107,82,.15);animation-delay:1s;"><div class="text-xs font-semibold" style="color:#ff7b6b;">&#9889; Workflow: Running</div></div>
+      </div>
+      <h2 class="font-display mb-6" style="font-weight:900;font-size:clamp(2.2rem,6vw,4.5rem);color:var(--text-primary);letter-spacing:-0.02em;line-height:1.1;">
+        Your Next Business App<br/>Starts With a<br/><span class="gradient-text">Blank Canvas.</span>
+      </h2>
+      <p class="text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed" style="color:var(--text-secondary);">
+        Join thousands of teams who build internal tools, dashboards, and workflows with Velaris &mdash; no developer backlog, no months of waiting. Just results.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 mb-12">
+        <button class="btn-primary" style="padding:16px 36px;font-size:1rem;border-radius:12px;">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Start Building Free
+        </button>
+        <button class="btn-ghost" style="padding:15px 36px;font-size:1rem;border-radius:12px;">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Book a Demo
+        </button>
+      </div>
+      <div class="flex flex-wrap justify-center items-center gap-6">
+        <span class="flex items-center gap-1.5 text-xs" style="color:var(--text-secondary);"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Free plan available</span>
+        <span class="flex items-center gap-1.5 text-xs" style="color:var(--text-secondary);"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>No credit card required</span>
+        <span class="flex items-center gap-1.5 text-xs" style="color:var(--text-secondary);"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Deploy in minutes</span>
+        <span class="flex items-center gap-1.5 text-xs" style="color:var(--text-secondary);"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Enterprise SSO</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="py-12 border-t" style="border-color:var(--border);background:var(--bg-primary);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-10">
+      <div class="lg:col-span-2">
+        <div class="flex items-center gap-2.5 mb-4">
+          <div class="w-7 h-7 flex-shrink-0">
+            <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#flg)"/><path d="M8 22L14 10L18 18L22 12L26 22" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="10" r="3" fill="#22d3ee"/><defs><linearGradient id="flg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#4c1d95"/></linearGradient></defs></svg>
+          </div>
+          <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;color:var(--text-primary);">Velaris</span>
+        </div>
+        <p class="text-sm leading-relaxed mb-4 max-w-xs" style="color:var(--text-secondary);">The modern no-code/low-code platform for building powerful business applications without the complexity.</p>
+        <div class="text-xs" style="color:var(--text-secondary);">SOC 2 Type II &middot; GDPR Compliant &middot; AES-256 Encrypted</div>
+      </div>
+      <div><div class="font-semibold text-sm mb-3" style="color:var(--text-primary);">Product</div><div class="space-y-2"><a href="#" class="block text-sm" style="color:var(--text-secondary);">Builder</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Components</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Automations</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Integrations</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Pricing</a></div></div>
+      <div><div class="font-semibold text-sm mb-3" style="color:var(--text-primary);">Solutions</div><div class="space-y-2"><a href="#" class="block text-sm" style="color:var(--text-secondary);">Internal Tools</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">CRM</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">HR Portals</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Operations</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Enterprise</a></div></div>
+      <div><div class="font-semibold text-sm mb-3" style="color:var(--text-primary);">Company</div><div class="space-y-2"><a href="#" class="block text-sm" style="color:var(--text-secondary);">About</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Blog</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Careers</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Privacy</a><a href="#" class="block text-sm" style="color:var(--text-secondary);">Terms</a></div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="text-xs" style="color:var(--text-secondary);">&copy; 2026 Velaris Technologies Inc. All rights reserved.</div>
+      <div class="flex items-center gap-5">
+        <!-- Twitter / X -->
+        <a href="#" aria-label="Twitter" class="transition-all duration-200 hover:scale-125" style="color:var(--text-primary);opacity:.6;">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <!-- LinkedIn -->
+        <a href="#" aria-label="LinkedIn" class="transition-all duration-200 hover:scale-125" style="color:#0A66C2;opacity:.85;">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <!-- GitHub -->
+        <a href="#" aria-label="GitHub" class="transition-all duration-200 hover:scale-125" style="color:var(--text-primary);opacity:.6;">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+        <!-- YouTube -->
+        <a href="#" aria-label="YouTube" class="transition-all duration-200 hover:scale-125" style="color:#FF0000;opacity:.85;">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to Top -->
+<button id="back-to-top" onclick="scrollToTop()" aria-label="Back to top">
+  <svg class="w-5 h-5" style="color:white;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+</button>
+
+<!-- Login Modal -->
+<div id="login-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeLoginModal()"></div>
+  <div class="relative w-full max-w-md glass rounded-2xl p-8 shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="login-modal-content">
+    <button onclick="closeLoginModal()" class="absolute top-4 right-4 transition-colors hover:text-white" style="color:var(--text-secondary)">
+      <svg class="w-6 h-6 hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div class="text-center mb-8">
+      <h3 class="text-2xl font-bold mb-2" style="font-family:'Outfit',sans-serif;color:var(--text-primary)">Welcome Back</h3>
+      <p class="text-sm" style="color:var(--text-secondary)">Sign in to continue to Velaris</p>
+    </div>
+    <form class="space-y-5" onsubmit="event.preventDefault(); closeLoginModal();">
+      <div>
+        <label class="block text-sm font-medium mb-1" style="color:var(--text-secondary)">Email Address</label>
+        <input type="email" class="w-full rounded-lg px-4 py-3 text-sm focus:outline-none transition-colors border" style="background:var(--bg-primary); border-color:var(--border); color:var(--text-primary)" placeholder="you@example.com" required>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1" style="color:var(--text-secondary)">Password</label>
+        <input type="password" class="w-full rounded-lg px-4 py-3 text-sm focus:outline-none transition-colors border" style="background:var(--bg-primary); border-color:var(--border); color:var(--text-primary)" placeholder="••••••••" required>
+      </div>
+      <div class="flex items-center justify-between">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" class="rounded bg-transparent" style="border-color:var(--border)">
+          <span class="text-xs" style="color:var(--text-secondary)">Remember me</span>
+        </label>
+        <a href="#" class="text-xs transition-colors font-medium hover:opacity-80" style="color:var(--accent)">Forgot Password?</a>
+      </div>
+      <button type="submit" class="w-full btn-primary justify-center text-base py-3 mt-2">Sign In</button>
+    </form>
+    <div class="mt-6 text-center text-sm" style="color:var(--text-secondary)">
+      Don't have an account? <a href="#" onclick="closeLoginModal()" class="font-medium hover:opacity-80" style="color:var(--accent)">Start for free</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─── Theme ───
+  let isDark = true;
+  function toggleTheme() {
+    isDark = !isDark;
+    const html = document.documentElement;
+    const sun = document.getElementById('icon-sun');
+    const moon = document.getElementById('icon-moon');
+    if (isDark) {
+      html.classList.remove('light'); html.classList.add('dark');
+      document.body.classList.remove('light');
+      sun.classList.add('hidden'); moon.classList.remove('hidden');
+    } else {
+      html.classList.remove('dark'); html.classList.add('light');
+      document.body.classList.add('light');
+      sun.classList.remove('hidden'); moon.classList.add('hidden');
+    }
+  }
+
+  // ─── RTL ───
+  let isRTL = false;
+  function toggleRTL() {
+    isRTL = !isRTL;
+    const html = document.documentElement;
+    const label = document.getElementById('rtl-label');
+    html.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+    if (label) label.textContent = isRTL ? 'LTR' : 'RTL';
+  }
+
+  // ─── Mobile Menu ───
+  let menuOpen = false;
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    const menu = document.getElementById('mobile-menu');
+    const o = document.getElementById('menu-open');
+    const c = document.getElementById('menu-close');
+    if (menuOpen) { menu.classList.add('open'); o.classList.add('hidden'); c.classList.remove('hidden'); }
+    else { menu.classList.remove('open'); o.classList.remove('hidden'); c.classList.add('hidden'); }
+  }
+  function closeMenu() { if (menuOpen) toggleMenu(); }
+
+  // ─── Reveal on scroll ───
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // ─── Back to top ───
+  const btt = document.getElementById('back-to-top');
+  window.addEventListener('scroll', () => { btt.classList.toggle('visible', window.scrollY > 400); });
+  function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+  // ─── Smooth anchor scroll ───
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#' || targetId === '#hero') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const t = document.querySelector(targetId);
+      if (t) { e.preventDefault(); window.scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + window.scrollY - 72), behavior: 'smooth' }); }
+    });
+  });
+
+  // ─── Nav shadow ───
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { nav.style.boxShadow = scrollY > 20 ? '0 4px 30px rgba(0,0,0,.3)' : 'none'; });
+
+  // ─── Trigger hero reveals immediately ───
+  setTimeout(() => { document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('revealed')); }, 100);
+
+  // ─── Scroll Spy for Active Navigation ───
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    const scrollY = window.pageYOffset;
+    
+    sections.forEach(section => {
+      const sectionHeight = section.offsetHeight;
+      const sectionTop = section.offsetTop - 150; // offset for navbar
+      
+      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  });
+
+  // ─── Login Modal ───
+  function openLoginModal() {
+    const modal = document.getElementById('login-modal');
+    const content = document.getElementById('login-modal-content');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+      content.classList.remove('scale-95', 'opacity-0');
+      content.classList.add('scale-100', 'opacity-100');
+    }, 10);
+  }
+  function closeLoginModal() {
+    const modal = document.getElementById('login-modal');
+    const content = document.getElementById('login-modal-content');
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }, 300);
+  }
+</script>
+</body>
+</html>
